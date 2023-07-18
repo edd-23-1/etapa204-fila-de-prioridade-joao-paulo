@@ -49,7 +49,25 @@ class FilaPrioridade:
     # se a fila de prioridade estiver cheia, lança uma exceção: raise Exception("mensagem de erro")
     def add(self, valor, prioridade) -> bool:
         # implementação do método
-        pass
+        novo_no = No(valor, prioridade)
+
+        if self.is_full():
+            raise Exception("A fila de prioridade está cheia.")
+        elif self.is_empty():
+            self.__inicio = novo_no
+        elif prioridade > self.__inicio.prioridade:
+            novo_no.prox = self.__inicio
+            self.__inicio = novo_no
+        else:    
+            apontador = self.__inicio
+            while apontador.prox and prioridade <= apontador.prox.prioridade:
+                apontador = apontador.prox
+
+            novo_no.prox = apontador.prox
+            apontador.prox = novo_no
+
+        self.__qtdItens += 1    
+        return True
 
     
     # remove o primeiro item da fila de prioridade, caso não esteja vazia, e retorna o Nó
